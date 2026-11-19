@@ -573,7 +573,7 @@ header .wrap>a.btn-gold{white-space:nowrap}
         </div>
         <div class="pane done" data-pane="3" hidden>
           <div class="badge">✓</div>
-          <div class="big">You’re on the list</div>
+          <div class="big" id="doneH">You’re on the list</div>
           <p id="doneMsg">We’ll be in touch shortly to schedule your free inspection.</p>
         </div>
         <div class="form-nav" id="formNav">
@@ -790,7 +790,7 @@ const REVIEWS = [ // from Google. Wrap the line to highlight in [[double bracket
 const EMAIL = "Sales@baytownroofing.net";
 async function sendLead(fields, subject){
   try{
-    const r = await fetch("https://formsubmit.co/ajax/sales@baytownroofing.net", {method:"POST", headers:{"Content-Type":"application/json", "Accept":"application/json"},
+    const r = await fetch("https://formsubmit.co/ajax/5fda3bff35e3dbaed60f41d1cac3dbed", {method:"POST", headers:{"Content-Type":"application/json", "Accept":"application/json"},
       body: JSON.stringify(Object.assign({_subject: subject, _template: "table", _captcha: "false"}, fields))});
     const j = await r.json().catch(() => ({}));
     return r.ok && String(j.success) !== "false";
@@ -934,6 +934,7 @@ $("#estForm").addEventListener("submit", async e => {
   btn.disabled = false;
   const body = Object.entries(fields).filter(([k]) => !k.startsWith("_")).map(([k,v]) => `${k}: ${v}`).join("\n");
   const href = `mailto:${EMAIL}?subject=${encodeURIComponent("Free estimate request: " + name)}&body=${encodeURIComponent(body)}`;
+  $("#doneH").textContent = ok ? "You’re on the list" : "Almost done";
   $("#doneMsg").innerHTML = ok
     ? `Thanks, ${esc($("#fn").value.trim())}. Your request went straight to our team. We’ll call or text you about ${esc(picked.toLowerCase())} to schedule your free inspection.`
     : `Thanks, ${esc($("#fn").value.trim())}. We couldn’t send it from here, so tap below to email it, or call or text 281-520-1871. <a href="${href}" style="color:var(--blue);font-weight:700">Email the details to ${EMAIL}</a>`;
